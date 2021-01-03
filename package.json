@@ -1,0 +1,29 @@
+{
+  "name": "backend-udemy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "Larissa Novaes",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.16.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/larissanovaes00/todo-node-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/larissanovaes00/todo-node-react/issues"
+  },
+  "homepage": "https://github.com/larissanovaes00/todo-node-react#readme",
+  "description": ""
+}
