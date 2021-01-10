@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const TaskController = require('../controller/TaskController');
 const TaskValidation = require('../middlewares/TaskValidation');
+const MacaddressValidation = require('../middlewares/MacaddressValidation');
 
-// minha função de create só é executada depois do taskvalidation, ou seja, só depois que 
-// os campos requeridos forem devidamente validados
+// funções só são executadas depois que os campos requeridos forem validados
 router.post('/', TaskValidation, TaskController.create);
-
 router.put('/:id', TaskValidation, TaskController.update);
+
+router.get('/filter/all', MacaddressValidation, TaskController.all);
 
 module.exports = router;
