@@ -7,4 +7,6 @@ const TaskValidation = require('../middlewares/TaskValidation');
 // os campos requeridos forem devidamente validados
 router.post('/', TaskValidation, TaskController.create);
 
+router.put('/:id', TaskValidation, TaskController.update);
+
 module.exports = router;
