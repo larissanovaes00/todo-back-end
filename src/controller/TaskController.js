@@ -1,5 +1,8 @@
-const { response } = require("express");
+//const { response } = require("express");
+
 const TaskModel = require("../model/TaskModel");
+const current = new Date();
+
 
 // feito em modelo de classe para poder utilizar os métodos de maneira componentizada,
 // posso utilizar os métodos criados separadamente dessa forma
@@ -66,6 +69,34 @@ class TaskController {
       .catch((error) => {
         return res.status(500).json(error);
       });
+  }
+
+  async done(req, res) {
+    await TaskModel.findByIdAndUpdate(
+      { '_id': req.params.id },
+      { 'done': req.params.done },
+      { new: true }
+    )
+      .then(response => {
+        return res.status(200).json(response);
+      })
+      .catch(error => {
+        return res.status(500).json(error);
+      });
+  }
+
+  async late(req, res) {
+    await TaskModel.find({
+      'when': { '$lt': current },
+      'macaddress': { '$in': req.body.macaddress }
+    })
+    .sort('when')
+    .then(response => {
+      return res.status(200).json(response);
+    })
+    .catch(error => {
+      return res.status(500).json(error);
+    });
   }
 }
 
