@@ -1,5 +1,3 @@
-//const { response } = require("express");
-
 const TaskModel = require("../model/TaskModel");
 const current = new Date();
 const {
@@ -10,8 +8,7 @@ const {
 } = require('date-fns');
 
 
-// feito em modelo de classe para poder utilizar os métodos de maneira componentizada,
-// posso utilizar os métodos criados separadamente dessa forma
+// feito em modelo de classe para poder utilizar os métodos de maneira componentizada
 
 class TaskController {
   async create(req, res) {
@@ -34,33 +31,6 @@ class TaskController {
     })
       .then((response) => {
         return res.status(200).json(response);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      });
-  }
-
-  async all(req, res) {
-    await TaskModel.find({
-      macaddress: { $in: req.body.macaddress },
-    })
-      .sort("when")
-      .then((response) => {
-        return res.status(200).json(response);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-      });
-  }
-
-  async show(req, res) {
-    await TaskModel.findById(req.params.id)
-      .then((response) => {
-        if (response) {
-          return res.status(200).json(response);
-        } else {
-          return res.status(404).json({ error: "tarefa não encontrada" });
-        }
       })
       .catch((error) => {
         return res.status(500).json(error);
@@ -91,10 +61,37 @@ class TaskController {
       });
   }
 
+  async show(req, res) {
+    await TaskModel.findById(req.params.id)
+      .then((response) => {
+        if (response) {
+          return res.status(200).json(response);
+        } else {
+          return res.status(404).json({ error: "tarefa não encontrada" });
+        }
+      })
+      .catch((error) => {
+        return res.status(500).json(error);
+      });
+  }
+
+  async all(req, res) {
+    await TaskModel.find({
+      macaddress: { $in: req.params.macaddress },
+    })
+      .sort("when")
+      .then((response) => {
+        return res.status(200).json(response);
+      })
+      .catch((error) => {
+        return res.status(500).json(error);
+      });
+  }
+
   async late(req, res) {
     await TaskModel.find({
       'when': { '$lt': current },
-      'macaddress': { '$in': req.body.macaddress }
+      'macaddress': { '$in': req.params.macaddress }
     })
       .sort('when')
       .then(response => {
@@ -108,7 +105,7 @@ class TaskController {
   async today(req, res) {
     await TaskModel
       .find({
-        'macaddress': { '$in': req.body.macaddress },
+        'macaddress': { '$in': req.params.macaddress },
         'when': { '$gte': startOfDay(current), '$lte': endOfDay(current) }
       })
       .sort('when')
@@ -123,7 +120,7 @@ class TaskController {
   async week(req, res) {
     await TaskModel
       .find({
-        'macaddress': { '$in': req.body.macaddress },
+        'macaddress': { '$in': req.params.macaddress },
         'when': { '$gte': startOfWeek(current), '$lte': endOfWeek(current) }
       })
       .sort('when')
@@ -138,7 +135,7 @@ class TaskController {
   async month(req, res) {
     await TaskModel
       .find({
-        'macaddress': { '$in': req.body.macaddress },
+        'macaddress': { '$in': req.params.macaddress },
         'when': { '$gte': startOfMonth(current), '$lte': endOfMonth(current) }
       })
       .sort('when')
@@ -153,7 +150,7 @@ class TaskController {
   async year(req, res) {
     await TaskModel
       .find({
-        'macaddress': { '$in': req.body.macaddress },
+        'macaddress': { '$in': req.params.macaddress },
         'when': { '$gte': startOfYear(current), '$lte': endOfYear(current) }
       })
       .sort('when')
@@ -164,8 +161,6 @@ class TaskController {
         return res.status(500).json(error);
       });
   }
-
-
 }
 
 module.exports = new TaskController();
